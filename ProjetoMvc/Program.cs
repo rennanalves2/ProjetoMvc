@@ -1,6 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using ProjetoMvc.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AgendaContext>(options => 
+    options.UseSqlServer(connectionString));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
