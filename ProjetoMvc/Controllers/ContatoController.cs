@@ -37,5 +37,49 @@ namespace ProjetoMvc.Controllers
 
             return View(contato);
         }
+
+        public IActionResult Editar(int id)
+        {
+            var contato = _context.Contatos.Find(id);
+
+            if (contato is null)
+            {
+                return NotFound();
+            }
+
+            return View(contato);
+        }
+
+        [HttpPost]
+        public IActionResult Editar(Contato contato)
+        {
+            var contatoBanco = _context.Contatos.Find(contato.Id);
+
+            if (contatoBanco is null)
+            {
+                return NotFound();
+            }
+
+            contatoBanco.Nome = contato.Nome;
+            contatoBanco.Telefone = contato.Telefone;
+            contatoBanco.Ativo = contato.Ativo;
+
+            _context.Update(contatoBanco);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Detalhes(int id)
+        {
+            var contato = _context.Contatos.Find(id);
+
+            if (contato is null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(contato);
+        }
     }
 }
